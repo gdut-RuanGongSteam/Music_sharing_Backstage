@@ -8,4 +8,8 @@ public interface UserDao {
 
     //根据用户id获取用户信息
     User getUserByUserID( Integer id );
+
+    //根据邮箱获取用户信息
+    User getUserByEmail(String mailbox);
+
 }
