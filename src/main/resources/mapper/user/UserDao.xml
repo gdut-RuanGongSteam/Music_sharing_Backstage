@@ -2,9 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zhuanye.music_system.dao.UserDao">
 
-    <!--根据userid获取用户信息-->
+    <sql id="selectAll">select id,name,password,mailbox,gender,phone,head_picture,create_data,enabled,song_number from users_table </sql>
+
+
+    <!--根据userID获取用户信息-->
     <select id="getUserByUserID" resultType="com.zhuanye.music_system.entity.User" parameterType="int">
-        select * from users_table where id = #{id}
+        <include refid="selectAll"></include>
+        where id = #{id}
     </select>
+
+    <!--根据email获取用户信息-->
+    <select id="getUserByEmail" resultType="com.zhuanye.music_system.entity.User" parameterType="String">
+        <include refid="selectAll"></include>
+        where mailbox = #{mailbox}
+    </select>
+
+
 
 </mapper>
