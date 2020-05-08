@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="js/jquery-3.0.0.min.js"></script>
+</head>
+<body>
+<!--<audio controls autoplay loop src="http://localhost:8080/MusicSharing/song/getSongFile/21"></audio>-->
+<audio loop="" controls="" preload="" src="http://localhost:8080/music_system/song/getSongFile/d55d87cc-31eb-42c8-98ab-208c31e89ff8.mp3" loop="" controls="" preload=""></audio>
+<a href="http://localhost:8080/music_system/song/downloader?path=d55d87cc-31eb-42c8-98ab-208c31e89ff8.mp3&id=1">下载</a>
+<!--<a href="http://localhost:8080/MusicSharing/song/">下载2</a>-->
+
+<form id="song_form" action="song/uploadSong" method="post" enctype="multipart/form-data">
+    歌名<input id="name" name="name" type="text"/>
+    歌手<input id="author" name="author" type="text">
+    选择歌曲:<input id="file" type="file" name="file" accept=".mp3"/>
+    歌词<textarea name="lyric"></textarea>
+    <button type="submit" >提交</button>
+</form>
+<script type="text/javascript">
+    $(document).ready(function (){
+        // $.ajax({
+        //     type: "get",
+        //     // url: "http://localhost:8080/MusicSharing/songs/%E8%96%9B%E4%B9%8B%E8%B0%A6%20-%20%E5%A4%A9%E4%BB%BD%20-%20%E5%89%AF%E6%9C%AC.mp3",
+        //     // url: "http://localhost:8080/MusicSharing/song/getSongFile/21",
+        //     url: "http://localhost:8080/MusicSharing/song/getSongFile/21",
+        //     success: function (data) {
+        //         console.log(data)
+        //     }
+        // })
+
+        $("#song_form").submit(function () {
+           if($("#name").val()=="" || $("#author").val()=="" || $("#file").val()==""){
+               alert("歌名，歌手名和歌曲必填");
+                event.preventDefault();
+            }
+        })
+    })
+</script>
+</body>
+</html>
