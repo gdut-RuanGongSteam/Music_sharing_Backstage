@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhuanye.music_system.dao.SongDao">
+    <resultMap type="Song" id="SongMap">
+        <id property="id" column="song_id"/>
+        <result property="path" column="path"/>
+        <result property="name" column="name"/>
+        <result property="author" column="author"/>
+        <result property="uploaderTime" column="uploader_time"/>
+        <result property="downloaderNumber" column="downloader_number"/>
+        <result property="lyric" column="lyric"/>
+    </resultMap>
+    <sql id="base_colum">
+        song_id, path, name, author, uploader_time, downloader_number, lyric
+    </sql>
+    <!--根据id获取歌曲信息-->
+    <select id="findById" resultMap="SongMap" parameterType="int">
+        select <include refid="base_colum"/> from song_table where song_id = #{id}
+    </select>
+
+    <insert id="insertSong" parameterType="com.zhuanye.music_system.entity.Song">
+        insert song_table ( <include refid="base_colum"/> ) values (
+        #{id}, #{path}, #{name}, #{author}, #{uploaderTime}, #{downloaderNumber}, #{lyric}
+        )
+    </insert>
+    
+    <update id="increaseDownloadNumber">
+        update song_table set downloader_number = downloader_number + 1 where song_id = #{id};
+    </update>
+</mapper>
