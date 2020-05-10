@@ -1,35 +1,24 @@
 package com.zhuanye.music_system.controller;
 
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mpatric.mp3agic.*;
 import com.zhuanye.music_system.entity.Song;
 import com.zhuanye.music_system.service.SongService;
 import com.zhuanye.music_system.support.PageRequest;
-import com.zhuanye.music_system.utils.FileUtil;
+import com.zhuanye.music_system.util.FileUtil;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.annotation.Resource;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -163,6 +152,10 @@ public class SongController {
                 outputStream.flush();
                 response.flushBuffer();
                 outputStream.close();
+                for (String path:paths) {
+                    // 增加下载次数
+                    songService.increaseDownloadNumber(path);
+                }
             }
         } catch (JSONException e) {
             //参数格式错误

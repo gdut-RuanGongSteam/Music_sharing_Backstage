@@ -1,4 +1,4 @@
-package com.zhuanye.music_system.utils;
+package com.zhuanye.music_system.util;
 
 import com.mpatric.mp3agic.Mp3File;
 import org.springframework.util.StringUtils;

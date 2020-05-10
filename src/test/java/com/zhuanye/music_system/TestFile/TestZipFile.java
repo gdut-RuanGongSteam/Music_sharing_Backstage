@@ -1,13 +1,11 @@
 package com.zhuanye.music_system.TestFile;
 
 import com.alibaba.fastjson.JSONArray;
-import com.zhuanye.music_system.utils.FileUtil;
+import com.zhuanye.music_system.util.FileUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TestZipFile {
     @Test
