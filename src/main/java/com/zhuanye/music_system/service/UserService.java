@@ -2,7 +2,7 @@ package com.zhuanye.music_system.service;
 
 import com.zhuanye.music_system.dao.UserDao;
 import com.zhuanye.music_system.entity.User;
-import com.zhuanye.music_system.util.ResultMessage;
+import com.zhuanye.music_system.support.ResultMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
