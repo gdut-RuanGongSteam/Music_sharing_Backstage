@@ -14,8 +14,17 @@
         song_id, path, name, author, uploader_time, downloader_number, lyric
     </sql>
     <!--根据id获取歌曲信息-->
-    <select id="findById" resultMap="SongMap" parameterType="int">
+    <select id="selectById" resultMap="SongMap" parameterType="int">
         select <include refid="base_colum"/> from song_table where song_id = #{id}
+    </select>
+
+    <select id="selectByNameOrAuthor" parameterType="String" resultMap="SongMap">
+          select <include refid="base_colum"/> from song_table where name like CONCAT('%',#{name},'%') or author like CONCAT('%',#{name},'%')
+    </select>
+
+
+    <select id="selectAll" resultMap="SongMap">
+        select <include refid="base_colum"/> from song_table
     </select>
 
     <insert id="insertSong" parameterType="com.zhuanye.music_system.entity.Song">
@@ -24,7 +33,7 @@
         )
     </insert>
     
-    <update id="increaseDownloadNumber">
-        update song_table set downloader_number = downloader_number + 1 where song_id = #{id};
+    <update id="increaseDownloadNumber" parameterType="String">
+        update song_table set downloader_number = downloader_number + 1 where path = #{path};
     </update>
 </mapper>

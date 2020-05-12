@@ -2,7 +2,7 @@ package com.zhuanye.music_system.controller;
 
 import com.zhuanye.music_system.entity.User;
 import com.zhuanye.music_system.service.UserService;
-import com.zhuanye.music_system.util.ResultMessage;
+import com.zhuanye.music_system.support.ResultMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
