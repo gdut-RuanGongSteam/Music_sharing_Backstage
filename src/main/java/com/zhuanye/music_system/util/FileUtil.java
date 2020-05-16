@@ -30,22 +30,24 @@ public class FileUtil {
      * @return
      * @throws IOException
      */
-    public static File compress(String[] filePaths, String prePath, String zipFilePath) throws IOException {
+    public static File compress(List<String> filePaths, String prePath, String zipFilePath) throws IOException {
         byte[] buf = new byte[1024];
-        File zipFile = new File(zipFilePath);
+        File zipFile = new File(prePath+zipFilePath);
         //zip文件不存在，则创建文件，用于压缩
         if(!zipFile.exists()) {
             zipFile.createNewFile();
         }
         try {
             ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile));
-            for(int i = 0; i < filePaths.length; i++){
-                String relativePath = filePaths[i];
+            for(int i = 0; i < filePaths.size(); i++){
+                String relativePath = filePaths.get(i);
                 if(StringUtils.isEmpty(relativePath)){
+                    filePaths.remove(i);
                     continue;
                 }
                 File sourceFile = new File(prePath+relativePath);
                 if(sourceFile == null || !sourceFile.exists()){
+                    filePaths.remove(i);
                     continue;
                 }
                 FileInputStream fis = new FileInputStream(sourceFile);

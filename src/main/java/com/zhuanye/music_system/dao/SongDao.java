@@ -21,13 +21,18 @@ public interface SongDao {
     void increaseDownloadNumber(String path);
 
     /**
-     * 根据歌名或歌手名查询歌
+     * 根据歌名或歌手名模糊查询歌
      * @param name
      * @return
      */
     List<Song> selectByNameOrAuthor(String name);
 
-
+    /**
+     * 根据歌手名查询歌
+     * @param author
+     * @return
+     */
+    List<Song> selectByAuthor(String author);
 
     List<Song> selectAll();
 }

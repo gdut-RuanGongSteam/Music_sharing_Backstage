@@ -82,6 +82,17 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
+
+        <!--热部署-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <version>2.2.6.RELEASE</version>
+            <!--optional=true,依赖不会传递，该项目依赖devtools;之后
+               依赖boot项目的项目如果想要使用devtools,需要重新引入-->
+            <optional>true</optional>
+        </dependency>
+
     </dependencies>
 
 

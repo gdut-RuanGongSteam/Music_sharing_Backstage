@@ -31,16 +31,18 @@ public class SongService {
      */
     public PageInfo<Song> getPageInfoByNameOrAuthor(PageRequest pageRequest, String name) {
         PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
-        List<Song> Songs = songDao.selectByNameOrAuthor(name);
-        return new PageInfo<Song>(Songs);
+        return new PageInfo<Song>(songDao.selectByNameOrAuthor(name));
     }
 
     public PageInfo<Song> getPageInfoTotal(PageRequest pageRequest) {
         PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
-        List<Song> Songs = songDao.selectAll();
-        return new PageInfo<Song>(Songs);
+        return new PageInfo<Song>(songDao.selectAll());
     }
 
+    public PageInfo<Song> getPageInfoByName(PageRequest pageRequest, String author) {
+        PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
+        return new PageInfo<Song>(songDao.selectByAuthor(author));
+    }
 
     public void insertSong(Song song) {
         songDao.insertSong(song);

@@ -22,6 +22,9 @@
           select <include refid="base_colum"/> from song_table where name like CONCAT('%',#{name},'%') or author like CONCAT('%',#{name},'%')
     </select>
 
+    <select id="selectByAuthor" parameterType="String" resultMap="SongMap">
+        select <include refid="base_colum"/> from song_table where author = #{author}
+    </select>
 
     <select id="selectAll" resultMap="SongMap">
         select <include refid="base_colum"/> from song_table
