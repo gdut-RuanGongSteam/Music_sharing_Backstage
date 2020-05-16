@@ -34,9 +34,13 @@ public class SongService {
         return new PageInfo<Song>(songDao.selectByNameOrAuthor(name));
     }
 
-    public PageInfo<Song> getPageInfoTotal(PageRequest pageRequest) {
+    public PageInfo<Song> getPageInfoTotal(PageRequest pageRequest,boolean sortByDownloadNum) {
         PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
-        return new PageInfo<Song>(songDao.selectAll());
+        if(sortByDownloadNum) {
+            return new PageInfo<Song>(songDao.selectAllOrderByDownload());
+        }else {
+            return new PageInfo<Song>(songDao.selectAll());
+        }
     }
 
     public PageInfo<Song> getPageInfoByName(PageRequest pageRequest, String author) {
@@ -67,5 +71,9 @@ public class SongService {
         }
         song.setLyric(jsonObject.toString());
 
+    }
+
+    public void bindShareUser(int userId,int songId) {
+        songDao.bindShareUser(userId, songId);
     }
 }
