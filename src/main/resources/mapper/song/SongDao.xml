@@ -27,10 +27,14 @@
     </select>
 
     <select id="selectAll" resultMap="SongMap">
-        select <include refid="base_colum"/> from song_table
+        select <include refid="base_colum"/> from song_table order by song_id desc
     </select>
 
-    <insert id="insertSong" parameterType="com.zhuanye.music_system.entity.Song">
+    <select id="selectAllOrderByDownload" resultMap="SongMap">
+        select <include refid="base_colum"/> from song_table order by downloader_number desc
+    </select>
+
+    <insert id="insertSong" parameterType="com.zhuanye.music_system.entity.Song" keyProperty="id" useGeneratedKeys="true">
         insert song_table ( <include refid="base_colum"/> ) values (
         #{id}, #{path}, #{name}, #{author}, #{uploaderTime}, #{downloaderNumber}, #{lyric}
         )
@@ -39,4 +43,9 @@
     <update id="increaseDownloadNumber" parameterType="String">
         update song_table set downloader_number = downloader_number + 1 where path = #{path};
     </update>
+    
+    <insert id="bindShareUser" >
+        insert user_share_song_table (user_id, song_id) values (#{userId}, #{songId});
+        update users_table set song_number = song_number+1 where id = #{userId}
+    </insert>
 </mapper>

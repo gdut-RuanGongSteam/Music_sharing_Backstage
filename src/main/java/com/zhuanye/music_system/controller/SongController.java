@@ -8,6 +8,7 @@ import com.zhuanye.music_system.entity.Song;
 import com.zhuanye.music_system.service.SongService;
 import com.zhuanye.music_system.support.PageRequest;
 import com.zhuanye.music_system.util.FileUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -52,12 +53,12 @@ public class SongController {
     }
 
     @RequestMapping("/songList")
-    public PageInfo<Song> SongList(PageRequest pageRequest){
-        return songService.getPageInfoTotal(pageRequest);
+    public PageInfo<Song> SongList(PageRequest pageRequest, boolean sortByDownloadNum){
+        return songService.getPageInfoTotal(pageRequest, sortByDownloadNum);
     }
 
     @RequestMapping("/uploadSong")
-    public boolean uploadSong(Song song, MultipartFile file) {
+    public boolean uploadSong(Song song, int userId, MultipartFile file) {
         if (file == null) {
             return false;
         }
@@ -88,6 +89,7 @@ public class SongController {
             mp3File.save(song_path+fileNewName);
             song.setPath(fileNewName);
             songService.insertSong(song);
+            songService.bindShareUser(userId,song.getId());
         } catch (Exception e) {
             e.printStackTrace();
             return false;

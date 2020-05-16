@@ -9,6 +9,7 @@
 <audio controls autoplay loop src="http://120.24.35.66:8080/files/songs/d55d87cc-31eb-42c8-98ab-208c31e89ff8.mp3"></audio>
 <a href="song/downloaderOneSong/d55d87cc-31eb-42c8-98ab-208c31e89ff8.mp3">下载</a>
 <form id="song_form" action="song/uploadSong" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="userId" value="1">
     歌名<input id="name" name="name" type="text"/>
     歌手<input id="author" name="author" type="text">
     选择歌曲:<input id="file" type="file" name="file" accept=".mp3"/>
