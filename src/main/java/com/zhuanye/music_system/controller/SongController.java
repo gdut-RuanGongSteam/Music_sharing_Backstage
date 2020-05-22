@@ -8,6 +8,7 @@ import com.zhuanye.music_system.entity.Song;
 import com.zhuanye.music_system.service.SongService;
 import com.zhuanye.music_system.support.PageRequest;
 import com.zhuanye.music_system.util.FileUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -19,17 +20,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/song")
+@CrossOrigin
 public class SongController {
 
     @Resource
-    SongService songService;
+    private SongService songService;
 
     @Value("${song_path}")
-    String song_path;
+    private String song_path;
 
 
     @RequestMapping(value = "/findSongById/{id}", method = RequestMethod.GET)
@@ -37,18 +40,25 @@ public class SongController {
         return songService.selectById(id);
     }
 
+    /**歌手或歌名模糊查询*/
     @RequestMapping("/findSongByNameOrAuthor")
-    public PageInfo<Song> findSongByName(String name, PageRequest pageRequest){
+    public PageInfo<Song> findSongByNameOrAuthor(String name, PageRequest pageRequest){
         return songService.getPageInfoByNameOrAuthor(pageRequest, name);
     }
 
+    /**歌手名精确查询*/
+    @RequestMapping("/findSongByAuthor")
+    public PageInfo<Song> findSongByName(String author, PageRequest pageRequest){
+        return songService.getPageInfoByName(pageRequest, author);
+    }
+
     @RequestMapping("/songList")
-    public PageInfo<Song> SongList(PageRequest pageRequest){
-        return songService.getPageInfoTotal(pageRequest);
+    public PageInfo<Song> SongList(PageRequest pageRequest, boolean sortByDownloadNum){
+        return songService.getPageInfoTotal(pageRequest, sortByDownloadNum);
     }
 
     @RequestMapping("/uploadSong")
-    public boolean uploadSong(Song song, MultipartFile file) {
+    public boolean uploadSong(Song song, int userId, MultipartFile file) {
         if (file == null) {
             return false;
         }
@@ -79,6 +89,7 @@ public class SongController {
             mp3File.save(song_path+fileNewName);
             song.setPath(fileNewName);
             songService.insertSong(song);
+            songService.bindShareUser(userId,song.getId());
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -130,10 +141,13 @@ public class SongController {
 
 
     @RequestMapping(value = "/downloaderManySongs")
-    public void downloaderManySongs(String[] paths, HttpServletResponse response) {
+    public void downloaderManySongs(@RequestParam(value = "paths", required = true) List<String> paths, HttpServletResponse response) {
         if (paths == null) {
             response.setStatus(400);
             return;
+        }
+        for (String pa:paths) {
+            System.out.println(pa);
         }
         File zipFile = null;
         BufferedInputStream in = null;

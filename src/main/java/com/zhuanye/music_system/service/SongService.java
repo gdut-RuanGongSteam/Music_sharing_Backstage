@@ -31,16 +31,22 @@ public class SongService {
      */
     public PageInfo<Song> getPageInfoByNameOrAuthor(PageRequest pageRequest, String name) {
         PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
-        List<Song> Songs = songDao.selectByNameOrAuthor(name);
-        return new PageInfo<Song>(Songs);
+        return new PageInfo<Song>(songDao.selectByNameOrAuthor(name));
     }
 
-    public PageInfo<Song> getPageInfoTotal(PageRequest pageRequest) {
+    public PageInfo<Song> getPageInfoTotal(PageRequest pageRequest,boolean sortByDownloadNum) {
         PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
-        List<Song> Songs = songDao.selectAll();
-        return new PageInfo<Song>(Songs);
+        if(sortByDownloadNum) {
+            return new PageInfo<Song>(songDao.selectAllOrderByDownload());
+        }else {
+            return new PageInfo<Song>(songDao.selectAll());
+        }
     }
 
+    public PageInfo<Song> getPageInfoByName(PageRequest pageRequest, String author) {
+        PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
+        return new PageInfo<Song>(songDao.selectByAuthor(author));
+    }
 
     public void insertSong(Song song) {
         songDao.insertSong(song);
@@ -65,5 +71,9 @@ public class SongService {
         }
         song.setLyric(jsonObject.toString());
 
+    }
+
+    public void bindShareUser(int userId,int songId) {
+        songDao.bindShareUser(userId, songId);
     }
 }
