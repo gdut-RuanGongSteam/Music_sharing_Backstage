@@ -3,11 +3,12 @@ package com.zhuanye.music_system.service;
 import com.zhuanye.music_system.dao.UserDao;
 import com.zhuanye.music_system.entity.User;
 import com.zhuanye.music_system.support.ResultMessage;
+import com.zhuanye.music_system.util.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
 
 
 @Service
@@ -22,8 +23,9 @@ public class UserService{
     }
 
     //登录
-    public ResultMessage login(String mailbox,String password){
+    public Map login(String mailbox, String password){
 
+        Map<String,Object> resultMap = new HashMap();
         ResultMessage resultMessage = new ResultMessage();
         List<String> msg = new ArrayList<>();
 
@@ -34,13 +36,63 @@ public class UserService{
             msg.add("用户不存在");
         }else{
             if (userByEmail.getPassword().equals(password)){
-                resultMessage.setFlag(true);
+
+                if (userByEmail.isEnabled() == true){
+                    resultMessage.setFlag(true);
+                    resultMap.put("user",userByEmail);
+                }else{
+                    msg.add("账号未激活");
+                }
+
             }else{
                 msg.add("密码错误");
             }
         }
         resultMessage.setMsg(msg);
-        return resultMessage;
+        resultMap.put("resultMessage",resultMessage);
+
+        return resultMap;
     }
 
+    //查询邮箱是否存在
+    public boolean isExitmail(String mailbox){
+
+        if (userDao.getUserByEmail(mailbox) == null){
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+    //注册
+    public void registered(String name, String mailbox , String password){
+
+        User user = new User();
+        user.setName(name);
+        user.setMailbox(mailbox);
+        user.setPassword(password);
+        user.setEnabled(false);
+        user.setCreate_data(new Date());
+        userDao.addUser(user);
+
+        MailUtil.send(mailbox,
+                "欢迎加入共享音乐！请激活你的账号",
+                "欢迎你加入我们这个大家庭，<a href='http://127.0.0.1:8080/music_system/user/enabledUser/"+user.getId()+"'>点我</a>激活站号。",
+                "smtp", "smtp.163.com", "sabot_v@163.com", "465", "sabot_v@163.com", "meiyoumima1203");
+
+
+    }
+
+    //激活账号
+    public void enabled(Integer id){
+        userDao.enabled(id);
+    }
+
+    //更新头像
+    public void uploadHead_picture(Integer id, String head_picture){
+        User user  = new User();
+        user.setId(id);
+        user.setHead_picture(head_picture);
+        userDao.uploadHeadPicture(user);
+    }
 }

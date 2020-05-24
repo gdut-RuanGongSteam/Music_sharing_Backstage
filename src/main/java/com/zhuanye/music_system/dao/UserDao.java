@@ -12,4 +12,13 @@ public interface UserDao {
     //根据邮箱获取用户信息
     User getUserByEmail(String mailbox);
 
+    //添加用户
+    void addUser(User user);
+
+    //激活用户
+    void enabled(Integer id);
+
+    //上传头像
+    void uploadHeadPicture(User user);
+
 }
