@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhuanye.music_system.dao.CommentDao">
+    <insert id="addComment" parameterType="com.zhuanye.music_system.entity.Comment">
+        insert into comment_table ( user_id , song_id , content , time ) values (#{user_id},#{song_id},#{content},#{time} )
+    </insert>
+</mapper>
