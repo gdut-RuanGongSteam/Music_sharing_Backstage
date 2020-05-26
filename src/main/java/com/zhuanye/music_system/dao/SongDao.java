@@ -46,4 +46,28 @@ public interface SongDao {
      * @param songerId
      */
     void bindShareUser(@Param("userId") int userId, @Param("songId") int songerId);
+
+    /**
+     * 收藏歌曲
+     * @param userId
+     * @param songerId
+     * @return
+     */
+    int collectSongById(@Param("userId") int userId, @Param("songId") int songerId);
+
+    /**
+     * 是否收藏过
+     * @param userId
+     * @param songerId
+     * @return
+     */
+    int ifCollectSong(@Param("userId") int userId, @Param("songId") int songerId);
+
+    /**
+     * 根据用户id查询收藏歌曲
+     * @param userId
+     * @return
+     */
+    List<Song> selectCollectSongByUserId(int userId);
+
 }
