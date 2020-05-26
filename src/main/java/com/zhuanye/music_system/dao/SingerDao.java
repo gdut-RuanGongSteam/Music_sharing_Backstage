@@ -1,6 +1,7 @@
 package com.zhuanye.music_system.dao;
 
 import com.zhuanye.music_system.entity.Singer;
+import com.zhuanye.music_system.entity.SingerListView;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public interface SingerDao {
      * 查询所有歌手
      * @return
      */
-    List<Singer> selectAll();
+    List<SingerListView> selectAll();
 
     /**
      * 更新歌手信息

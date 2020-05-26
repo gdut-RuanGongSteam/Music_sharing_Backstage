@@ -48,4 +48,17 @@
         insert user_share_song_table (user_id, song_id) values (#{userId}, #{songId});
         update users_table set song_number = song_number+1 where id = #{userId}
     </insert>
+
+    <insert id="collectSongById" >
+        insert user_collect_song_table (user_id, song_id) values (#{userId}, #{songId})
+    </insert>
+
+    <select id="ifCollectSong" resultType="int">
+        select count(*) from user_collect_song_table where user_id =#{userId} and song_id = #{songId}
+    </select>
+    
+    <select id="selectCollectSongByUserId" parameterType="int" resultMap="SongMap">
+        select <include refid="base_colum"/> from song_table where song_id in
+        (select song_id from user_collect_song_table where user_id = #{userId})
+    </select>
 </mapper>
