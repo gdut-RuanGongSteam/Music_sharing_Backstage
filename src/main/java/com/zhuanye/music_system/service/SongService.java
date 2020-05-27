@@ -76,4 +76,18 @@ public class SongService {
     public void bindShareUser(int userId,int songId) {
         songDao.bindShareUser(userId, songId);
     }
+
+    public boolean collectSongById(int userId, int songId) {
+        if (songDao.ifCollectSong(userId, songId) > 0) {
+            return false;
+        }else if (songDao.collectSongById(userId, songId) > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public List<Song> selectCollectSongByUserId(int userId) {
+        return songDao.selectCollectSongByUserId(userId);
+    }
 }

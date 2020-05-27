@@ -2,6 +2,7 @@ package com.zhuanye.music_system.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.zhuanye.music_system.entity.Singer;
+import com.zhuanye.music_system.entity.SingerListView;
 import com.zhuanye.music_system.entity.Song;
 import com.zhuanye.music_system.service.SingerService;
 import com.zhuanye.music_system.support.PageRequest;
@@ -35,7 +36,7 @@ public class singerController {
 
     /**歌手名模糊查询*/
     @RequestMapping("/singerList")
-    public PageInfo<Singer> singerList(PageRequest pageRequest){
+    public PageInfo<SingerListView> singerList(PageRequest pageRequest){
         return singerService.selectAll(pageRequest);
     }
 

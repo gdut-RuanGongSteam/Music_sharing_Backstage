@@ -4,6 +4,7 @@ package com.zhuanye.music_system.controller;
 import com.alibaba.fastjson.JSONException;
 import com.github.pagehelper.PageInfo;
 import com.mpatric.mp3agic.*;
+import com.zhuanye.music_system.entity.Singer;
 import com.zhuanye.music_system.entity.Song;
 import com.zhuanye.music_system.service.SongService;
 import com.zhuanye.music_system.support.PageRequest;
@@ -190,6 +191,23 @@ public class SongController {
         }
     }
 
+    /**
+     *  收藏歌曲
+     * @param songId
+     * @param userId
+     * @return
+     */
+    @RequestMapping("/collectSongByIds")
+    public boolean collectSongByIds(int userId, int songId) {
+        return songService.collectSongById(userId, songId);
+    }
+
+    @RequestMapping("/getCollectSongByUserId")
+    public List<Song> getCollectSongByUserId(int userId) {
+
+        return songService.selectCollectSongByUserId(userId);
+
+    }
 
 //    @RequestMapping("/downloader")
 //    public ResponseEntity<byte[]> downloade(String path, int id) {

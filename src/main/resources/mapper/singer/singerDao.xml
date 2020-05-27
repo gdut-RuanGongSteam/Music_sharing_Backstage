@@ -7,6 +7,12 @@
         <result property="gender" column="gender"/>
         <result property="picturePath" column="picture"/>
     </resultMap>
+
+    <resultMap type="SingerListView" id="SingerListViewMap">
+        <result property="name" column="name"/>
+        <result property="picturePath" column="picture"/>
+    </resultMap>
+
     <sql id="base_colum" >
         singer_id, name, gender, picture
     </sql>
@@ -22,15 +28,15 @@
     </update>
 
     <select id="selectSingerByName" parameterType="String" resultMap="SingerMap">
-        select <include refid="base_colum" /> from singer_table where name = like CONCAT('%',#{name},'%')
+        select <include refid="base_colum" /> from singer_table where name like CONCAT('%',#{name},'%')
     </select>
 
     <select id="isExistByName" parameterType="String" resultType="int">
         select count(*) from singer_table where name = #{name}
     </select>
 
-    <select id="selectAll" >
-        select <include refid="base_colum" /> from singer_table
+    <select id="selectAll" resultMap="SingerListViewMap">
+        select name,picture from singer_table
     </select>
 
     <select id="selectSingerById" resultMap="SingerMap">
