@@ -21,4 +21,10 @@ public interface UserDao {
     //上传头像
     void uploadHeadPicture(User user);
 
+    //修改密码
+    void updatePassword(User user);
+
+    //修改用户资料
+    void updateMessage(User user);
+
 }

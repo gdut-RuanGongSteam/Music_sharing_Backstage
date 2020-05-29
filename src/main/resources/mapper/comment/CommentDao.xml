@@ -1,7 +1,125 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zhuanye.music_system.dao.CommentDao">
+
+    <resultMap id="comment" type="com.zhuanye.music_system.entity.Comment">
+        <id column="comment_id" property="comment_id" ></id>
+        <result column="user_id" property="user_id" ></result>
+        <result column="song_id" property="song_id"></result>
+        <result column="content" property="content"></result>
+        <result column="praise_number" property="praise_number"></result>
+        <result column="time" property="time"></result>
+        <result column="father_comment_id" property="father_comment_id"></result>
+    </resultMap>
+
+    <resultMap id="commentEntity" type="com.zhuanye.music_system.entity.CommentEntity">
+
+        <id column="comment_id" property="comment_id" ></id>
+        <result column="user_id" property="user_id" ></result>
+        <result column="song_id" property="song_id"></result>
+        <result column="content" property="content"></result>
+        <result column="praise_number" property="praise_number"></result>
+        <result column="time" property="time"></result>
+        <result column="father_comment_id" property="father_comment_id"></result>
+        <result column="praise_id" property="praise_id"></result>
+
+        <association property="user" javaType="com.zhuanye.music_system.entity.User">
+            <id column="id" property="id"></id>
+            <result column="name" property="name"></result>
+            <result column="password" property="password"></result>
+            <result column="mailbox" property="mailbox"></result>
+            <result column="gender" property="gender"></result>
+            <result column="phone" property="phone"></result>
+            <result column="head_picture" property="head_picture"></result>
+            <result column="create_data" property="create_data"></result>
+            <result column="enabled" property="enabled"></result>
+            <result column="song_number" property="song_number"></result>
+        </association>
+
+        <association property="father_comment" javaType="com.zhuanye.music_system.entity.Comment">
+            <id column="comment_id1" property="comment_id" ></id>
+            <result column="content1" property="content"></result>
+        </association>
+
+        <association property="father_user" javaType="com.zhuanye.music_system.entity.User">
+            <id column="id1" property="id"></id>
+            <result column="name1" property="name"></result>
+        </association>
+
+
+    </resultMap>
+
+    <!--添加回复-->
+    <insert id="addReply" parameterType="com.zhuanye.music_system.entity.Comment">
+    insert into comment_table ( user_id , song_id , content , time ,father_comment_id ) values (#{user_id},#{song_id},#{content},#{time},#{father_comment_id} )
+    </insert>
+
+    <!--根据id获取评论-->
+    <select id="getCommentById" resultMap="comment" parameterType="int">
+      select comment_id, user_id , song_id , content , time ,father_comment_id from comment_table where comment_id = #{comment_id}
+    </select>
+
+    <!--添加评论-->
     <insert id="addComment" parameterType="com.zhuanye.music_system.entity.Comment">
         insert into comment_table ( user_id , song_id , content , time ) values (#{user_id},#{song_id},#{content},#{time} )
     </insert>
+
+    <!--获取一首歌的精彩评论列表-->
+    <select id="getCommentList" resultMap="commentEntity" parameterType="int">
+        SELECT t1.*,t2.*,t5.praise_id praise_id,t3.comment_id comment_id1, t3.content content1, t4.id id1, t4.name name1 FROM comment_table AS t1
+	      JOIN users_table as t2 ON t1.user_id = t2.id AND t1.song_id = #{song_id}
+	      LEFT JOIN comment_table AS t3 ON t1.father_comment_id > 0 AND  t1.father_comment_id = t3.comment_id
+	      LEFT JOIN users_table AS t4 ON  t3.user_id = t4.id
+	      LEFT JOIN praise_table AS t5 ON  t5.user_id = #{user_id} AND t5.comment_id = t1.comment_id ORDER BY t1.praise_number DESC
+
+    </select>
+
+    <!--获取一首歌的最新评论列表-->
+    <select id="getNewCommentList" resultMap="commentEntity" parameterType="int">
+        SELECT t1.*,t2.*,t5.praise_id praise_id,t3.comment_id comment_id1, t3.content content1, t4.id id1, t4.name name1 FROM comment_table AS t1
+	      JOIN users_table as t2 ON t1.user_id = t2.id AND t1.song_id = #{song_id}
+	      LEFT JOIN comment_table AS t3 ON t1.father_comment_id > 0 AND  t1.father_comment_id = t3.comment_id
+	      LEFT JOIN users_table AS t4 ON  t3.user_id = t4.id
+	      LEFT JOIN praise_table AS t5 ON  t5.user_id = #{user_id} AND t5.comment_id = t1.comment_id ORDER BY t1.time DESC
+    </select>
+
+    <!--点赞-->
+    <update id="addPraise_number" parameterType="int">
+        update comment_table set praise_number = praise_number + 1 where comment_id = #{comment_id}
+    </update>
+
+    <!--取消点赞-->
+    <update id="delPraise_number" parameterType="int">
+        update comment_table set praise_number = praise_number - 1 where comment_id = #{comment_id}
+    </update>
+
+    <!--添加点赞 用户-评论 关系表-->
+    <insert id="addPraise" parameterType="com.zhuanye.music_system.entity.PraiseUserComment">
+        insert into praise_table ( user_id , comment_id ) values ( #{user_id} , #{ comment_id } )
+    </insert>
+
+    <!--删除点赞 用户-评论 关系表-->
+    <delete id="delPraise" parameterType="com.zhuanye.music_system.entity.PraiseUserComment">
+        delete  from praise_table where user_id = #{user_id} and comment_id = #{comment_id}
+    </delete>
+
+    <!--更新子评论-->
+    <update id="updateSonComment" parameterType="int">
+        update comment_table set father_comment_id = -2 where father_comment_id = #{comment_id}
+    </update>
+
+    <!--删除评论-->
+    <delete id="deleteComment" parameterType="int">
+        delete from comment_table where comment_id = #{comment_id}
+    </delete>
+
+    <!--获取我的评论-->
+    <select id="getMyCommentList" resultMap="commentEntity" parameterType="int">
+        SELECT t1.*,t2.*,t5.praise_id praise_id,t3.comment_id comment_id1, t3.content content1, t4.id id1, t4.name name1 FROM comment_table AS t1
+	      JOIN users_table as t2 ON t1.user_id = t2.id AND t1.user_id = #{user_id}
+	      LEFT JOIN comment_table AS t3 ON t1.father_comment_id > 0 AND  t1.father_comment_id = t3.comment_id
+	      LEFT JOIN users_table AS t4 ON  t3.user_id = t4.id
+	      LEFT JOIN praise_table AS t5 ON  t5.user_id = #{user_id} AND t5.comment_id = t1.comment_id ORDER BY t1.time DESC
+    </select>
+
 </mapper>

@@ -149,7 +149,7 @@ public class UserController {
     }
 
     //根据url获取头像
-    @RequestMapping("getHeadPicture")
+    @RequestMapping("/getHeadPicture")
     public void getHeadPicture( String url , HttpServletResponse response) throws IOException {
 
         byte[] readAllBytes = Files.readAllBytes(new File(url).toPath());
@@ -165,6 +165,51 @@ public class UserController {
         response.getOutputStream().write(readAllBytes);
         response.getOutputStream().flush();
 
+    }
+
+    //修改密码
+    @RequestMapping("/updatePassword")
+    @ResponseBody
+    public ResultMessage updatePassword(String password,String newPassword,HttpServletRequest request){
+
+        ResultMessage resultMessage = new ResultMessage();
+        List<String> msg = new ArrayList<>();
+        User user = (User) request.getSession().getAttribute("user");
+
+        if ( user.getPassword().equals(password)){
+            user.setPassword(newPassword);
+            userService.updatePassword(user);
+            request.getSession().removeAttribute("user");
+            request.getSession().setAttribute("user",user);
+            resultMessage.setFlag(true);
+        }else{
+            msg.add("原密码不正确");
+        }
+
+        return resultMessage;
+    }
+
+
+    //修改资料
+    @RequestMapping("/updateMessage")
+    @ResponseBody
+    public ResultMessage updateMessage(String name , Boolean gender , String phone , HttpServletRequest request){
+        ResultMessage resultMessage = new ResultMessage();
+        List<String> msg = new ArrayList<>();
+        User user = (User) request.getSession().getAttribute("user");
+
+        user.setName(name);
+        user.setGender(gender);
+        user.setPhone(phone);
+
+        userService.updateMessage(user);
+
+        request.getSession().removeAttribute("user");
+        request.getSession().setAttribute("user",user);
+
+        resultMessage.setFlag(true);
+
+        return resultMessage;
     }
 
 }
