@@ -30,6 +30,16 @@
     <update id="uploadHeadPicture" parameterType="com.zhuanye.music_system.entity.User">
         update users_table set head_picture = #{head_picture} where  id = #{id}
     </update>
+    
+    <!--修改密码-->
+    <update id="updatePassword" parameterType="com.zhuanye.music_system.entity.User">
+        update users_table set password = #{password} where id = #{id}
+    </update>
+
+    <!--修改资料-->
+    <update id="updateMessage" parameterType="com.zhuanye.music_system.entity.User">
+        update users_table set name = #{name} , gender = #{gender}, phone = #{phone} where  id = #{id}
+    </update>
 
 
 

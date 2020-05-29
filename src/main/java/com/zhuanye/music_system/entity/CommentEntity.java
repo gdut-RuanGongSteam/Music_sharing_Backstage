@@ -2,7 +2,7 @@ package com.zhuanye.music_system.entity;
 
 import java.util.Date;
 
-public class Comment {
+public class CommentEntity {
 
     private Integer comment_id;
     private Integer user_id;
@@ -11,6 +11,18 @@ public class Comment {
     private Integer praise_number;
     private Date time;
     private Integer father_comment_id;
+
+    private Integer praise_id ;
+
+    private User user;
+
+    private Comment father_comment;
+
+    private User father_user;
+
+
+
+
 
     public Integer getComment_id() {
         return comment_id;
@@ -35,7 +47,6 @@ public class Comment {
     public void setSong_id(Integer song_id) {
         this.song_id = song_id;
     }
-
 
     public String getContent() {
         return content;
@@ -69,16 +80,35 @@ public class Comment {
         this.father_comment_id = father_comment_id;
     }
 
-    @Override
-    public String toString() {
-        return "Comment{" +
-                "comment_id=" + comment_id +
-                ", user_id=" + user_id +
-                ", song_id=" + song_id +
-                ", content='" + content + '\'' +
-                ", praise_number=" + praise_number +
-                ", time=" + time +
-                ", father_comment_id=" + father_comment_id +
-                '}';
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Comment getFather_comment() {
+        return father_comment;
+    }
+
+    public void setFather_comment(Comment father_comment) {
+        this.father_comment = father_comment;
+    }
+
+    public User getFather_user() {
+        return father_user;
+    }
+
+    public void setFather_user(User father_user) {
+        this.father_user = father_user;
+    }
+
+    public Integer getPraise_id() {
+        return praise_id;
+    }
+
+    public void setPraise_id(Integer praise_id) {
+        this.praise_id = praise_id;
     }
 }

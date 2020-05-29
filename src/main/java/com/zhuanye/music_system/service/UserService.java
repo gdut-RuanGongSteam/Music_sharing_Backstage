@@ -95,4 +95,15 @@ public class UserService{
         user.setHead_picture(head_picture);
         userDao.uploadHeadPicture(user);
     }
+
+    //修改密码
+    public void updatePassword(User user){
+        userDao.updatePassword(user);
+    }
+
+    //修改资料
+    public void updateMessage(User user){
+
+        userDao.updateMessage(user);
+    }
 }
