@@ -40,12 +40,12 @@ public interface SongDao {
 
     /**根据下载量排序*/
     List<Song> selectAllOrderByDownload();
-    /**
-     *  绑定分享者
-     * @param userId
-     * @param songerId
-     */
-    void bindShareUser(@Param("userId") int userId, @Param("songId") int songerId);
+//    /**
+//     *  绑定分享者
+//     * @param userId
+//     * @param songerId
+//     */
+//    void bindShareUser(@Param("userId") int userId, @Param("songId") int songerId);
 
     /**
      * 收藏歌曲
@@ -69,5 +69,12 @@ public interface SongDao {
      * @return
      */
     List<Song> selectCollectSongByUserId(int userId);
+
+    /**
+     * 根据用户名查询分享歌曲
+     * @param sharerName
+     * @return
+     */
+    List<Song> selectSongBySharerName(String sharerName);
 
 }

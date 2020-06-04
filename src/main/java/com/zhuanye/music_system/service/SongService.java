@@ -73,9 +73,9 @@ public class SongService {
 
     }
 
-    public void bindShareUser(int userId,int songId) {
-        songDao.bindShareUser(userId, songId);
-    }
+//    public void bindShareUser(int userId,int songId) {
+//        songDao.bindShareUser(userId, songId);
+//    }
 
     public boolean collectSongById(int userId, int songId) {
         if (songDao.ifCollectSong(userId, songId) > 0) {
@@ -87,7 +87,13 @@ public class SongService {
         }
     }
 
-    public List<Song> selectCollectSongByUserId(int userId) {
-        return songDao.selectCollectSongByUserId(userId);
+    public PageInfo<Song> selectCollectSongByUserId(int userId, PageRequest pageRequest) {
+        PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
+        return new PageInfo<Song>(songDao.selectCollectSongByUserId(userId));
+    }
+
+    public PageInfo<Song> selectSongBySharerName(String sharerName, PageRequest pageRequest){
+        PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
+        return new PageInfo<Song>(songDao.selectSongBySharerName(sharerName));
     }
 }

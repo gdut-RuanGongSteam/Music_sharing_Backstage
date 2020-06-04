@@ -27,4 +27,6 @@ public interface UserDao {
     //修改用户资料
     void updateMessage(User user);
 
+    //增加用户歌曲分享数量
+    void increaseShareNum(Integer id);
 }
