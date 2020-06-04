@@ -34,6 +34,10 @@ public class Song {
      */
     private int downloaderNumber;
 
+    /**
+     * 分享者用户名
+     */
+    private String sharerName;
 
     /**
      * 歌词
@@ -99,5 +103,25 @@ public class Song {
         this.downloaderNumber = downloaderNumber;
     }
 
+    public String getSharerName() {
+        return sharerName;
+    }
 
+    public void setSharerName(String sharerName) {
+        this.sharerName = sharerName;
+    }
+
+    @Override
+    public String toString() {
+        return "Song{" +
+                "id=" + id +
+                ", path='" + path + '\'' +
+                ", name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", uploaderTime=" + uploaderTime +
+                ", downloaderNumber=" + downloaderNumber +
+                ", sharerName='" + sharerName + '\'' +
+                ", lyric='" + lyric + '\'' +
+                '}';
+    }
 }

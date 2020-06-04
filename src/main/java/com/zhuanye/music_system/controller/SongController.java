@@ -6,7 +6,9 @@ import com.github.pagehelper.PageInfo;
 import com.mpatric.mp3agic.*;
 import com.zhuanye.music_system.entity.Singer;
 import com.zhuanye.music_system.entity.Song;
+import com.zhuanye.music_system.entity.User;
 import com.zhuanye.music_system.service.SongService;
+import com.zhuanye.music_system.service.UserService;
 import com.zhuanye.music_system.support.PageRequest;
 import com.zhuanye.music_system.util.FileUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +34,9 @@ public class SongController {
     @Resource
     private SongService songService;
 
+    @Resource
+    private UserService userService;
+
     @Value("${song_path}")
     private String song_path;
 
@@ -53,14 +58,20 @@ public class SongController {
         return songService.getPageInfoByName(pageRequest, author);
     }
 
+    /**
+     * 获取歌曲列表
+     * @param pageRequest
+     * @param sortByDownloadNum true：按下载热度降序返回 false：按上传时间逆序返回
+     * @return
+     */
     @RequestMapping("/songList")
     public PageInfo<Song> SongList(PageRequest pageRequest, boolean sortByDownloadNum){
         return songService.getPageInfoTotal(pageRequest, sortByDownloadNum);
     }
 
     @RequestMapping("/uploadSong")
-    public boolean uploadSong(Song song, int userId, MultipartFile file) {
-        if (file == null) {
+    public boolean uploadSong(Song song, Integer userId, MultipartFile file) {
+        if (file == null || userId == null) {
             return false;
         }
         song.setUploaderTime(new Date());
@@ -89,8 +100,13 @@ public class SongController {
             mp3File.setId3v2Tag(id3v2Tag);
             mp3File.save(song_path+fileNewName);
             song.setPath(fileNewName);
+            User user  =userService.getUserByUserID(userId);
+            if (user != null) {
+                song.setSharerName(user.getName());
+                userService.increaseShareNum(userId);
+            }
             songService.insertSong(song);
-            songService.bindShareUser(userId,song.getId());
+//            songService.bindShareUser(userId,song.getId());
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -203,10 +219,15 @@ public class SongController {
     }
 
     @RequestMapping("/getCollectSongByUserId")
-    public List<Song> getCollectSongByUserId(int userId) {
+    public PageInfo<Song> getCollectSongByUserId(int userId, PageRequest pageRequest) {
 
-        return songService.selectCollectSongByUserId(userId);
+        return songService.selectCollectSongByUserId(userId, pageRequest);
 
+    }
+
+    @RequestMapping("/getShareSongBySharerName")
+    public PageInfo<Song> getShareSongBySharerName(String sharerName,PageRequest pageRequest){
+        return songService.selectSongBySharerName(sharerName, pageRequest);
     }
 
 //    @RequestMapping("/downloader")

@@ -41,7 +41,9 @@
         update users_table set name = #{name} , gender = #{gender}, phone = #{phone} where  id = #{id}
     </update>
 
-
-
+    <!--增加用户歌曲分享数量-->
+    <update id="increaseShareNum" parameterType="int">
+         update users_table set song_number = song_number+1 where  id = #{id}
+    </update>
 
 </mapper>
