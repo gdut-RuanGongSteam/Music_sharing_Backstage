@@ -104,6 +104,7 @@ public class UserController {
 
         if ( !verifyCode.equals(code)){
             msg.add("验证码错误");
+            msg.add(code);
             resultMessage.setMsg(msg);
             return resultMessage;
         }
