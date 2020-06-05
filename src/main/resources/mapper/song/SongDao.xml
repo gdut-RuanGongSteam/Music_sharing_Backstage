@@ -9,9 +9,10 @@
         <result property="uploaderTime" column="uploader_time"/>
         <result property="downloaderNumber" column="downloader_number"/>
         <result property="lyric" column="lyric"/>
+        <result property="sharerName" column="sharer_name"/>
     </resultMap>
     <sql id="base_colum">
-        song_id, path, name, author, uploader_time, downloader_number, lyric
+        song_id, path, name, author, uploader_time, downloader_number, sharer_name, lyric
     </sql>
     <!--根据id获取歌曲信息-->
     <select id="selectById" resultMap="SongMap" parameterType="int">
@@ -36,7 +37,7 @@
 
     <insert id="insertSong" parameterType="com.zhuanye.music_system.entity.Song" keyProperty="id" useGeneratedKeys="true">
         insert song_table ( <include refid="base_colum"/> ) values (
-        #{id}, #{path}, #{name}, #{author}, #{uploaderTime}, #{downloaderNumber}, #{lyric}
+        #{id}, #{path}, #{name}, #{author}, #{uploaderTime}, #{downloaderNumber}, #{sharerName}, #{lyric}
         )
     </insert>
     
@@ -44,10 +45,11 @@
         update song_table set downloader_number = downloader_number + 1 where path = #{path};
     </update>
     
-    <insert id="bindShareUser" >
-        insert user_share_song_table (user_id, song_id) values (#{userId}, #{songId});
-        update users_table set song_number = song_number+1 where id = #{userId}
-    </insert>
+    <!--<insert id="bindShareUser" >-->
+        <!--insert user_share_song_table (user_id, song_id) values (#{userId}, #{songId});-->
+        <!--update users_table set song_number = song_number+1 where id = #{userId}-->
+    <!--</insert>-->
+
 
     <insert id="collectSongById" >
         insert user_collect_song_table (user_id, song_id) values (#{userId}, #{songId})
@@ -60,5 +62,9 @@
     <select id="selectCollectSongByUserId" parameterType="int" resultMap="SongMap">
         select <include refid="base_colum"/> from song_table where song_id in
         (select song_id from user_collect_song_table where user_id = #{userId})
+    </select>
+
+    <select id="selectSongBySharerName" parameterType="String" resultMap="SongMap">
+        select <include refid="base_colum"/> from song_table where sharer_name = #{sharerName}
     </select>
 </mapper>

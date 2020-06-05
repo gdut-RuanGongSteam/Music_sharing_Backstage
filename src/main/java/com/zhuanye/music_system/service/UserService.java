@@ -106,4 +106,8 @@ public class UserService{
 
         userDao.updateMessage(user);
     }
+
+    public void increaseShareNum(Integer id) {
+        userDao.increaseShareNum(id);
+    }
 }
