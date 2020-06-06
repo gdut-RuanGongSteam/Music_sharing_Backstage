@@ -77,7 +77,7 @@ public class UserService{
 
         MailUtil.send(mailbox,
                 "欢迎加入共享音乐！请激活你的账号",
-                "欢迎你加入我们这个大家庭，<a href='http://127.0.0.1:8080/music_system/user/enabledUser/"+user.getId()+"'>点我</a>激活站号。",
+                "欢迎你加入我们这个大家庭，<a href='http://120.24.35.66:8080/music_system/user/enabledUser/"+user.getId()+"'>点我</a>激活站号。",
                 "smtp", "smtp.163.com", "sabot_v@163.com", "465", "sabot_v@163.com", "meiyoumima1203");
 
 

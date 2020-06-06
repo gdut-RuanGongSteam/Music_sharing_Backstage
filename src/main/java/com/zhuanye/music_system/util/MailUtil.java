@@ -44,6 +44,7 @@ public class MailUtil {
             props.put("mail.smtp.starttls.enable", "true");
             props.put("mail.smtp.socketFactory.fallback", "false");
             props.put("mail.smtp.socketFactory.port", sendPort);
+            props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         }
         Session session = Session.getDefaultInstance(props);
 
