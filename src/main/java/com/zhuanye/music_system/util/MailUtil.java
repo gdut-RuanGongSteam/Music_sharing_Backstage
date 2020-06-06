@@ -41,6 +41,7 @@ public class MailUtil {
         // 指定邮件的发送人(您用来发送邮件的服务器，比如您的163\sina等邮箱)
         props.put("mail.from", sendName);
         if (true) {
+            props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
             props.put("mail.smtp.starttls.enable", "true");
             props.put("mail.smtp.socketFactory.fallback", "false");
             props.put("mail.smtp.socketFactory.port", sendPort);
