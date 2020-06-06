@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.zhuanye.music_system.dao.SongDao;
 import com.zhuanye.music_system.entity.Song;
 import com.zhuanye.music_system.support.PageRequest;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -95,5 +96,12 @@ public class SongService {
     public PageInfo<Song> selectSongBySharerName(String sharerName, PageRequest pageRequest){
         PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
         return new PageInfo<Song>(songDao.selectSongBySharerName(sharerName));
+    }
+
+    public boolean hadShareSong(String name, String author, String sharerName){
+        if (songDao.hadShareSong(name, author,sharerName)>0) {
+            return true;
+        }
+        return false;
     }
 }

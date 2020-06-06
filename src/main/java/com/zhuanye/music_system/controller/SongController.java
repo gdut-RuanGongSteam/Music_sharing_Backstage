@@ -69,9 +69,13 @@ public class SongController {
     }
 
     @RequestMapping("/uploadSong")
-    public boolean uploadSong(Song song, Integer userId, MultipartFile file) {
+    public String uploadSong(Song song, Integer userId, MultipartFile file) {
         if (file == null || userId == null) {
-            return false;
+            return "上传失败";
+        }
+        User user  =userService.getUserByUserID(userId);
+        if (user != null && songService.hadShareSong(song.getName(),song.getAuthor(),user.getName())) {
+            return "你已上传过该歌曲";
         }
         song.setUploaderTime(new Date());
         String fileNewName =  UUID.randomUUID().toString()+".mp3";
@@ -99,20 +103,19 @@ public class SongController {
             mp3File.setId3v2Tag(id3v2Tag);
             mp3File.save(song_path+fileNewName);
             song.setPath(fileNewName);
-            User user  =userService.getUserByUserID(userId);
+
             if (user != null) {
                 song.setSharerName(user.getName());
                 userService.increaseShareNum(userId);
             }
             songService.insertSong(song);
-//            songService.bindShareUser(userId,song.getId());
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return "上传失败";
         }finally {
             f.delete();
         }
-        return true;
+        return "上传成功";
     }
 
     @RequestMapping("/downloaderOneSong/{path}")
