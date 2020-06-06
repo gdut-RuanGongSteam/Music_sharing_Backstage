@@ -28,7 +28,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/song")
-@CrossOrigin
 public class SongController {
 
     @Resource

@@ -25,7 +25,6 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/singer")
-@CrossOrigin
 public class singerController {
 
     @Resource
