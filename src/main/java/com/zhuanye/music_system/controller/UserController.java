@@ -53,7 +53,7 @@ public class UserController {
     }
 
     //登录
-    @RequestMapping(value = "login",method = RequestMethod.POST)
+    @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
     public ResultMessage login(String mailbox,String password,HttpServletRequest request){
 
