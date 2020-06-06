@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		.contain{
+			background-image: url(https://s1.ax1x.com/2020/06/05/tsImX8.jpg);
+			background-repeat: no-repeat;
+			background-size: 100%;
+		}
+		.title{
+			margin:20px auto ;
+			text-align: center;
+			color: white;
+		}
+		.enter{
+			width: 200px;
+			height: 200px;
+			position: absolute;
+			top: 45%;
+			left: 45%;
+		}
+		.enter button{
+			background-color: white;
+			font-size: 25px;
+			text-align: center;
+			width: 120px;
+			height: 60px;
+			border-radius: 20px;
+			outline: none;
+		}
+	</style>
+	<body class="contain">
+		<div class="title">
+			<h1>欢迎来到音乐分享系统</h1>
+			<h2>开启你的音乐之旅吧！</h2>
+		</div>
+		<div class="enter"><button onclick="changePage()"> JOIN US</button></div>
+	</body>
+	<script>
+		function changePage(){
+			window.location.href="http://120.24.35.66:8081/"
+		}
+	</script>
+</html>
