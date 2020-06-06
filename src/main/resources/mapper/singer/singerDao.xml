@@ -10,7 +10,7 @@
 
     <resultMap type="SingerListView" id="SingerListViewMap">
         <result property="name" column="name"/>
-        <result property="picturePath" column="picture"/>
+        <result property="picturePath" column="picturePath"/>
     </resultMap>
 
     <sql id="base_colum" >
@@ -35,9 +35,13 @@
         select count(*) from singer_table where name = #{name}
     </select>
 
+    <!--<select id="selectAll" resultMap="SingerListViewMap">-->
+        <!--select name,picture from singer_table-->
+    <!--</select>-->
     <select id="selectAll" resultMap="SingerListViewMap">
-        select name,picture from singer_table
+        select distinct song_table.author as name,singer_table.picture as picturePath from song_table LEFT JOIN singer_table on song_table.author = singer_table.name
     </select>
+
 
     <select id="selectSingerById" resultMap="SingerMap">
         select <include refid="base_colum" /> from singer_table where singer_id=#{id}

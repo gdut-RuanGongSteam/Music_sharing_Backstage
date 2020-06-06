@@ -77,4 +77,5 @@ public interface SongDao {
      */
     List<Song> selectSongBySharerName(String sharerName);
 
+    int hadShareSong(@Param("name")String name, @Param("author")String author, @Param("sharerName")String sharerName);
 }

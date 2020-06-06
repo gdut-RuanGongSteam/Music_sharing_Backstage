@@ -67,4 +67,9 @@
     <select id="selectSongBySharerName" parameterType="String" resultMap="SongMap">
         select <include refid="base_colum"/> from song_table where sharer_name = #{sharerName}
     </select>
+
+
+    <select id="hadShareSong" parameterType="String" resultType="int">
+        select count(*) from song_table where name=#{name} and author=#{author} and sharer_name = #{sharerName}
+    </select>
 </mapper>
