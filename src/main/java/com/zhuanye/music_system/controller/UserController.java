@@ -26,7 +26,6 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/user")
-@CrossOrigin
 public class UserController {
 
     @Value("${picture_path}")
