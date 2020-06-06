@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhuanye.music_system.dao.SongDao">
+    <resultMap type="Song" id="SongMap">
+        <id property="id" column="song_id"/>
+        <result property="path" column="path"/>
+        <result property="name" column="name"/>
+        <result property="author" column="author"/>
+        <result property="uploaderTime" column="uploader_time"/>
+        <result property="downloaderNumber" column="downloader_number"/>
+        <result property="lyric" column="lyric"/>
+        <result property="sharerName" column="sharer_name"/>
+    </resultMap>
+    <sql id="base_colum">
+        song_id, path, name, author, uploader_time, downloader_number, sharer_name, lyric
+    </sql>
+    <!--根据id获取歌曲信息-->
+    <select id="selectById" resultMap="SongMap" parameterType="int">
+        select <include refid="base_colum"/> from song_table where song_id = #{id}
+    </select>
+
+    <select id="selectByNameOrAuthor" parameterType="String" resultMap="SongMap">
+          select <include refid="base_colum"/> from song_table where name like CONCAT('%',#{name},'%') or author like CONCAT('%',#{name},'%')
+    </select>
+
+    <select id="selectByAuthor" parameterType="String" resultMap="SongMap">
+        select <include refid="base_colum"/> from song_table where author = #{author}
+    </select>
+
+    <select id="selectAll" resultMap="SongMap">
+        select <include refid="base_colum"/> from song_table order by song_id desc
+    </select>
+
+    <select id="selectAllOrderByDownload" resultMap="SongMap">
+        select <include refid="base_colum"/> from song_table order by downloader_number desc
+    </select>
+
+    <insert id="insertSong" parameterType="com.zhuanye.music_system.entity.Song" keyProperty="id" useGeneratedKeys="true">
+        insert song_table ( <include refid="base_colum"/> ) values (
+        #{id}, #{path}, #{name}, #{author}, #{uploaderTime}, #{downloaderNumber}, #{sharerName}, #{lyric}
+        )
+    </insert>
+    
+    <update id="increaseDownloadNumber" parameterType="String">
+        update song_table set downloader_number = downloader_number + 1 where path = #{path};
+    </update>
+    
+    <!--<insert id="bindShareUser" >-->
+        <!--insert user_share_song_table (user_id, song_id) values (#{userId}, #{songId});-->
+        <!--update users_table set song_number = song_number+1 where id = #{userId}-->
+    <!--</insert>-->
+
+
+    <insert id="collectSongById" >
+        insert user_collect_song_table (user_id, song_id) values (#{userId}, #{songId})
+    </insert>
+
+    <select id="ifCollectSong" resultType="int">
+        select count(*) from user_collect_song_table where user_id =#{userId} and song_id = #{songId}
+    </select>
+    
+    <select id="selectCollectSongByUserId" parameterType="int" resultMap="SongMap">
+        select <include refid="base_colum"/> from song_table where song_id in
+        (select song_id from user_collect_song_table where user_id = #{userId})
+    </select>
+
+    <select id="selectSongBySharerName" parameterType="String" resultMap="SongMap">
+        select <include refid="base_colum"/> from song_table where sharer_name = #{sharerName}
+    </select>
+</mapper>

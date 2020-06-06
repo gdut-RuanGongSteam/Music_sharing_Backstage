@@ -8,17 +8,18 @@
         <version>2.2.6.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.zhuanye</groupId>
+    <groupId>com.zhuanye.music_system</groupId>
     <artifactId>music_system</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>music_system</name>
     <description>Demo project for Spring Boot</description>
-
+    <packaging>war</packaging>
     <properties>
         <java.version>1.8</java.version>
     </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -57,7 +58,55 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        <!--music_start 操作音频 -->
+        <dependency>
+            <groupId>com.mpatric</groupId>
+            <artifactId>mp3agic</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+
+        <!--json-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.47</version>
+        </dependency>
+
+        <!-- pagehelper -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <!--热部署-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <version>2.2.6.RELEASE</version>
+            <!--optional=true,依赖不会传递，该项目依赖devtools;之后
+               依赖boot项目的项目如果想要使用devtools,需要重新引入-->
+            <optional>true</optional>
+        </dependency>
+
+        <!--发送邮件依赖-->
+        <dependency>
+             <groupId>javax.mail</groupId>
+             <artifactId>mail</artifactId>
+             <version>1.4.7</version>
+         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
     </dependencies>
+
 
     <build>
         <plugins>
@@ -66,6 +115,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <finalName>music_system</finalName>
     </build>
 
 </project>

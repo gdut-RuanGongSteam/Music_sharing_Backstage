@@ -2,9 +2,48 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zhuanye.music_system.dao.UserDao">
 
-    <!--根据userid获取用户信息-->
+    <sql id="selectAll">select id,name,password,mailbox,gender,phone,head_picture,create_data,enabled,song_number from users_table </sql>
+
+    <!--根据userID获取用户信息-->
     <select id="getUserByUserID" resultType="com.zhuanye.music_system.entity.User" parameterType="int">
-        select * from users_table where id = #{id}
+        <include refid="selectAll"></include>
+        where id = #{id}
     </select>
+
+    <!--根据email获取用户信息-->
+    <select id="getUserByEmail" resultType="com.zhuanye.music_system.entity.User" parameterType="String">
+        <include refid="selectAll"></include>
+        where mailbox = #{mailbox}
+    </select>
+
+    <!--添加用户-->
+    <insert id="addUser" parameterType="com.zhuanye.music_system.entity.User" useGeneratedKeys="true" keyProperty="id">
+        insert into users_table ( name , mailbox , password , enabled , create_data) values ( #{name},#{mailbox},#{password},#{enabled} ,#{create_data })
+    </insert>
+
+    <!--激活用户-->
+    <update id="enabled" parameterType="int">
+        update users_table set enabled = 1 where id = #{id}
+    </update>
+
+    <!--更新头像-->
+    <update id="uploadHeadPicture" parameterType="com.zhuanye.music_system.entity.User">
+        update users_table set head_picture = #{head_picture} where  id = #{id}
+    </update>
+    
+    <!--修改密码-->
+    <update id="updatePassword" parameterType="com.zhuanye.music_system.entity.User">
+        update users_table set password = #{password} where id = #{id}
+    </update>
+
+    <!--修改资料-->
+    <update id="updateMessage" parameterType="com.zhuanye.music_system.entity.User">
+        update users_table set name = #{name} , gender = #{gender}, phone = #{phone} where  id = #{id}
+    </update>
+
+    <!--增加用户歌曲分享数量-->
+    <update id="increaseShareNum" parameterType="int">
+         update users_table set song_number = song_number+1 where  id = #{id}
+    </update>
 
 </mapper>

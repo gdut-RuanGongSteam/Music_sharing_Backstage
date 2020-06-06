@@ -1,7 +1,7 @@
 package com.zhuanye.music_system.entity;
 
-import java.util.Date;
 
+import java.util.Date;
 
 /**
  * @auther:sabot
@@ -12,12 +12,12 @@ public class User {
 
     private Integer id;
     private String name;
-    private String asword;
+    private String password;
     private String mailbox;
     private boolean gender;
     private String phone;
     private String head_picture;
-    private Date create_time;
+    private Date create_data;
     private boolean enabled;
     private Integer song_number;
 
@@ -37,12 +37,12 @@ public class User {
         this.name = name;
     }
 
-    public String getAsword() {
-        return asword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setAsword(String asword) {
-        this.asword = asword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getMailbox() {
@@ -77,12 +77,12 @@ public class User {
         this.head_picture = head_picture;
     }
 
-    public Date getCreate_time() {
-        return create_time;
+    public Date getCreate_data() {
+        return create_data;
     }
 
-    public void setCreate_time(Date create_time) {
-        this.create_time = create_time;
+    public void setCreate_data(Date create_data) {
+        this.create_data = create_data;
     }
 
     public boolean isEnabled() {
@@ -101,19 +101,4 @@ public class User {
         this.song_number = song_number;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", asword='" + asword + '\'' +
-                ", mailbox='" + mailbox + '\'' +
-                ", gender=" + gender +
-                ", phone='" + phone + '\'' +
-                ", head_picture='" + head_picture + '\'' +
-                ", create_time=" + create_time +
-                ", enabled=" + enabled +
-                ", song_number=" + song_number +
-                '}';
-    }
 }

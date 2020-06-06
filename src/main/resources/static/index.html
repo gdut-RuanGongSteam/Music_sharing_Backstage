@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="js/jquery-3.0.0.min.js"></script>
+</head>
+<body>
+<audio controls autoplay loop src="http://120.24.35.66:8080/files/songs/d55d87cc-31eb-42c8-98ab-208c31e89ff8.mp3"></audio>
+<a href="song/downloaderOneSong/d55d87cc-31eb-42c8-98ab-208c31e89ff8.mp3">下载</a>
+<form id="song_form" action="song/uploadSong" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="userId" value="1">
+    歌名<input id="name" name="name" type="text"/>
+    歌手<input id="author" name="author" type="text">
+    选择歌曲:<input id="file" type="file" name="file" accept=".mp3"/>
+    <!--歌词<textarea name="lyric"></textarea>-->
+    <button type="submit" >提交</button>
+</form>
+<!--测试查找-->
+<!--<form id="form" action="song/findSongByNameOrAuthor" method="post" >-->
+    <!--歌名或歌名<input id="name" name="name" type="text"/>-->
+    <!--<button type="submit" >提交</button>-->
+<!--</form>-->
+
+<button id="downloader">测试多首歌下载</button>
+
+
+<hr/>
+<form id="singer_form" action="singer/addSinger" method="post" enctype="multipart/form-data">
+    歌手名<input id="singer_name" name="name" type="text"/>
+    性别：
+    <select name="gender">
+        <option value="0" selected>女</option>
+        <option value="1">男</option>
+    </select>
+    歌手照片<input id="singer_file" type="file" name="file" />
+    <button type="submit">提交</button>
+</form>
+<hr />
+更新
+<form id="update_singer_form" action="singer/updateSinger" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="1">
+    歌手名<input name="name" type="text"/>
+    性别：
+    <select name="gender">
+        <option value="0" selected>女</option>
+        <option value="1">男</option>
+    </select>
+    歌手照片<input  type="file" name="file" />
+    <button type="submit">提交</button>
+</form>
+<script type="text/javascript">
+    $(document).ready(function (){
+        // $.ajax({
+        //     type: "get",
+        //     // url: "http://localhost:8080/MusicSharing/songs/%E8%96%9B%E4%B9%8B%E8%B0%A6%20-%20%E5%A4%A9%E4%BB%BD%20-%20%E5%89%AF%E6%9C%AC.mp3",
+        //     // url: "http://localhost:8080/MusicSharing/song/getSongFile/21",
+        //     url: "http://localhost:8080/MusicSharing/song/getSongFile/21",
+        //     success: function (data) {
+        //         console.log(data)
+        //     }
+        // })
+
+        $("#song_form").submit(function () {
+           if($("#name").val()=="" || $("#author").val()=="" || $("#file").val()==""){
+               alert("歌名，歌手名和歌曲必填");
+                event.preventDefault();
+            }
+        })
+
+    })
+
+    $("#downloader").click(function () {
+        datas =new Array('d55d87cc-31eb-42c8-98ab-208c31e89ff8.mp3','6f15c7f1-04d6-4bf9-8a49-b2f5dcc4bf2b.mp3','d11ea914-0f9f-4437-937d-f0bc73ccc7df.mp3')
+        console.log(datas.toString())
+        console.log(datas)
+        console.log(JSON.stringify(datas))
+        // $.ajax({
+        //     url: "song/downloaderManySongs",
+        //     type: "POST",
+        //     data: {
+        //         // paths: 'f8ed936a-2ad8-4f7f-b40a-c80d95fc50e1.mp3,d55d87cc-31eb-42c8-98ab-208c31e89ff8.mp3,7bd0e716-718a-463b-9cf5-4cac1601af89.mp3'
+        //         paths: JSON.stringify(datas)
+        //         // paths: datas
+        //     }
+        // })
+        // window.open("song/downloaderManySongs?paths="+datas.toString())
+        window.location.href="song/downloaderManySongs?paths="+datas.toString()
+    })
+</script>
+</body>
+</html>

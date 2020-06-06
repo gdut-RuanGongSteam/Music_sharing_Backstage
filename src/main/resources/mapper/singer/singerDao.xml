@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhuanye.music_system.dao.SingerDao">
+    <resultMap type="Singer" id="SingerMap">
+        <id property="id" column="singer_id"/>
+        <result property="name" column="name"/>
+        <result property="gender" column="gender"/>
+        <result property="picturePath" column="picture"/>
+    </resultMap>
+
+    <resultMap type="SingerListView" id="SingerListViewMap">
+        <result property="name" column="name"/>
+        <result property="picturePath" column="picture"/>
+    </resultMap>
+
+    <sql id="base_colum" >
+        singer_id, name, gender, picture
+    </sql>
+
+    <insert id="insertSinger" parameterType="com.zhuanye.music_system.entity.Singer">
+          insert singer_table (
+          <include refid="base_colum" />
+          ) values ( #{id}, #{name}, #{gender}, #{picturePath} )
+    </insert>
+
+    <update id="updateSinger" parameterType="com.zhuanye.music_system.entity.Singer">
+          update singer_table set name=#{name}, gender=#{gender} , picture=#{picturePath} where singer_id=#{id}
+    </update>
+
+    <select id="selectSingerByName" parameterType="String" resultMap="SingerMap">
+        select <include refid="base_colum" /> from singer_table where name like CONCAT('%',#{name},'%')
+    </select>
+
+    <select id="isExistByName" parameterType="String" resultType="int">
+        select count(*) from singer_table where name = #{name}
+    </select>
+
+    <select id="selectAll" resultMap="SingerListViewMap">
+        select name,picture from singer_table
+    </select>
+
+    <select id="selectSingerById" resultMap="SingerMap">
+        select <include refid="base_colum" /> from singer_table where singer_id=#{id}
+    </select>
+
+    <delete id="deleteSingerById" parameterType="int">
+        delete from singer_table where singer_id = #{id}
+    </delete>
+
+
+</mapper>
