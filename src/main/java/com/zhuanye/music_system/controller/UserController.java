@@ -142,8 +142,18 @@ public class UserController {
         file.transferTo(f.getAbsoluteFile());
 
         User user = (User) request.getSession().getAttribute("user");
-        userService.uploadHead_picture(user.getId(),url);
-        return url;
+        if (user!=null) {
+            if (user.getHead_picture()!=null && user.getHead_picture()!="") {
+                File headPicture = new File(picture_path+user.getHead_picture());
+                if (headPicture.exists()){
+                    headPicture.delete();
+                }
+            }
+            userService.uploadHead_picture(user.getId(),fileNewName);
+            return fileNewName;
+        }else {
+            return "";
+        }
 
 
     }
@@ -152,7 +162,7 @@ public class UserController {
     @RequestMapping("/getHeadPicture")
     public void getHeadPicture( String url , HttpServletResponse response) throws IOException {
 
-        byte[] readAllBytes = Files.readAllBytes(new File(url).toPath());
+        byte[] readAllBytes = Files.readAllBytes(new File(picture_path+url).toPath());
 
         //设置响应头
         response.setHeader("Pragma", "no-cache");
