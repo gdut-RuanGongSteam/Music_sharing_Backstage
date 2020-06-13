@@ -72,4 +72,12 @@
     <select id="hadShareSong" parameterType="String" resultType="int">
         select count(*) from song_table where name=#{name} and author=#{author} and sharer_name = #{sharerName}
     </select>
+
+    <update id="updateSharer" parameterType="String">
+        update song_table set sharer_name = #{sharerName} where sharer_name = #{oldSharerName}
+    </update>
+
+    <delete id="canceCollectSongById" parameterType="int">
+        delete from user_collect_song_table where user_id = #{userId} and song_id = #{songId}
+    </delete>
 </mapper>

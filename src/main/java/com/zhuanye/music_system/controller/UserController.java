@@ -2,6 +2,7 @@ package com.zhuanye.music_system.controller;
 
 import com.zhuanye.music_system.entity.User;
 import com.zhuanye.music_system.entity.VerifyCode;
+import com.zhuanye.music_system.service.SongService;
 import com.zhuanye.music_system.service.UserService;
 import com.zhuanye.music_system.support.ResultMessage;
 import com.zhuanye.music_system.util.IVerifyCodeGen;
@@ -33,6 +34,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SongService songService;
 
     //获取登录用户信息
     @RequestMapping("/getLoginUser")
@@ -145,11 +149,14 @@ public class UserController {
         if (user!=null) {
             if (user.getHead_picture()!=null && user.getHead_picture()!="") {
                 File headPicture = new File(picture_path+user.getHead_picture());
-                if (headPicture.exists()){
+                if (headPicture.exists()&& !"YVUz7V.jpg".equals(user.getHead_picture())){
                     headPicture.delete();
                 }
             }
             userService.uploadHead_picture(user.getId(),fileNewName);
+            request.getSession().removeAttribute("user");
+            user.setHead_picture(fileNewName);
+            request.getSession().setAttribute("user",user);
             return fileNewName;
         }else {
             return "";
@@ -207,7 +214,10 @@ public class UserController {
         ResultMessage resultMessage = new ResultMessage();
         List<String> msg = new ArrayList<>();
         User user = (User) request.getSession().getAttribute("user");
-
+        String oldName = user.getName();
+        if (oldName != null && !oldName.equals(name)){
+            songService.updateSharer(name, oldName);
+        }
         user.setName(name);
         user.setGender(gender);
         user.setPhone(phone);

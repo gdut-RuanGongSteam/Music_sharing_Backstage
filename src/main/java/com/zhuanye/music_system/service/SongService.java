@@ -104,4 +104,31 @@ public class SongService {
         }
         return false;
     }
+
+
+    /**
+     * 更新收藏者
+     * @param sharerName
+     * @param oldSharerName
+     * @return
+     */
+    public boolean updateSharer(String sharerName, String oldSharerName){
+        if(songDao.updateSharer(sharerName,oldSharerName) > 0) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * 取校收藏
+     * @param userId
+     * @param songId
+     * @return
+     */
+
+    public boolean canceCollectSongById(int userId, int songId){
+        if (songDao.canceCollectSongById(userId,songId) > 0){
+            return true;
+        }
+        return false;
+    }
 }
