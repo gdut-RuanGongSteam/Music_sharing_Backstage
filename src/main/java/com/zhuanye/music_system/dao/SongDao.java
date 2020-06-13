@@ -78,4 +78,9 @@ public interface SongDao {
     List<Song> selectSongBySharerName(String sharerName);
 
     int hadShareSong(@Param("name")String name, @Param("author")String author, @Param("sharerName")String sharerName);
+
+
+    int updateSharer(@Param("sharerName")String sharerName, @Param("oldSharerName")String oldSharerName);
+
+    int canceCollectSongById(@Param("userId") int userId, @Param("songId") int songerId);
 }

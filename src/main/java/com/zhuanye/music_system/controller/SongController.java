@@ -220,6 +220,11 @@ public class SongController {
         return songService.collectSongById(userId, songId);
     }
 
+    @RequestMapping("/cancelCollectSongByIds")
+    public boolean canceCollectSongById(int userId, int songId){
+        return songService.canceCollectSongById(userId,songId);
+    }
+
     @RequestMapping("/getCollectSongByUserId")
     public PageInfo<Song> getCollectSongByUserId(int userId, PageRequest pageRequest) {
 
